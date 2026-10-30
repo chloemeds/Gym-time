@@ -78,7 +78,7 @@ section.day { display: flex; flex-direction: column; gap: 18px; scroll-margin-to
 
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .week { grid-template-columns: repeat(4, minmax(0, 1fr)); } .wd.off { display: none; } }
+@media (max-width: 560px) { .sets > span { display: none; } .grid { grid-template-columns: 1fr; } .week { grid-template-columns: repeat(4, minmax(0, 1fr)); } .wd.off { display: none; } }
 
 .card { background: var(--paper); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
 .art { position: relative; background: color-mix(in srgb, var(--c) 9%, var(--paper)); aspect-ratio: 16 / 11; max-width: 100%; }
@@ -104,6 +104,9 @@ section.day { display: flex; flex-direction: column; gap: 18px; scroll-margin-to
 .sets span { font-size: 12px; color: var(--ink-2); margin-right: 4px; font-weight: 600; }
 .set { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--line); background: none; color: var(--ink-2); font: 700 13px var(--body); cursor: pointer; font-variant-numeric: tabular-nums; }
 .set[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--paper); }
+.set { flex-shrink: 0; }
+.all { flex-shrink: 0; white-space: nowrap; margin-left: auto; height: 30px; padding: 0 12px; border-radius: 999px; border: 2px solid var(--c); background: none; color: var(--c); font: 700 13px var(--body); cursor: pointer; }
+.all[aria-pressed="true"] { background: var(--c); color: var(--paper); }
 
 /* figura */
 .fig line, .fig polyline { stroke-linecap: round; stroke-linejoin: round; fill: none; }
@@ -330,7 +333,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '3';
+const VERSION = '4';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -394,11 +397,17 @@ main.innerHTML = [...DAYS].sort((a, b) => a.tag.localeCompare(b.tag)).map(d => `
                 const k = `${d.id}-${i}-${s}`;
                 return `<button class="set" type="button" id="set-${k}" data-k="${k}" aria-pressed="${!!store[k]}" aria-label="Serie ${s} de ${e.n}">${s}</button>`;
               }).join('')}
+              <button class="all" type="button" id="all-${d.id}-${i}" data-all="${d.id}-${i}" aria-pressed="${[1, 2, 3, 4, 5, 6].every(s => store[`${d.id}-${i}-${s}`])}" aria-label="Marcar las 6 series de ${e.n}">✓ Todas</button>
             </div>
           </div>
         </article>`).join('')}
     </div>
   </section>`).join('');
+
+const syncAll = ex => {
+  const on = [1, 2, 3, 4, 5, 6].every(s => store[`${ex}-${s}`]);
+  document.getElementById('all-' + ex).setAttribute('aria-pressed', on);
+};
 
 main.addEventListener('click', ev => {
   const b = ev.target.closest('button');
@@ -423,10 +432,20 @@ main.addEventListener('click', ev => {
     b.setAttribute('aria-pressed', on);
     if (on) store[b.dataset.k] = 1; else delete store[b.dataset.k];
     save();
+    syncAll(b.dataset.k.replace(/-\d+$/, ''));
+  } else if (b.dataset.all) {
+    const ex = b.dataset.all, on = b.getAttribute('aria-pressed') !== 'true';
+    for (let s = 1; s <= 6; s++) {
+      const k = `${ex}-${s}`;
+      if (on) store[k] = 1; else delete store[k];
+      document.getElementById('set-' + k).setAttribute('aria-pressed', on);
+    }
+    b.setAttribute('aria-pressed', on);
+    save();
   } else if (b.dataset.day) {
     const day = b.dataset.day;
     Object.keys(store).forEach(k => { if (k.startsWith(day + '-')) delete store[k]; });
-    document.querySelectorAll(`#${day} .set`).forEach(s => s.setAttribute('aria-pressed', 'false'));
+    document.querySelectorAll(`#${day} .set, #${day} .all`).forEach(s => s.setAttribute('aria-pressed', 'false'));
     save();
   }
 });
