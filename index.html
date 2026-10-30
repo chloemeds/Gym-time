@@ -89,7 +89,16 @@ section.day { display: flex; flex-direction: column; gap: 18px; scroll-margin-to
 .chip { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 3px 10px; background: var(--bg); color: var(--ink-2); }
 .chip.rest { background: color-mix(in srgb, var(--c) 15%, var(--paper)); color: var(--ink); }
 .tip { margin: 0; font-size: 14px; }
-.sets { display: flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 6px; }
+.sets { display: flex; align-items: center; gap: 6px; padding-top: 6px; }
+.peso { margin-top: auto; display: flex; flex-direction: column; gap: 6px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.peso-row { display: flex; align-items: center; gap: 8px; }
+.peso label { font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.peso input { width: 76px; font: 700 16px var(--body); padding: 6px 8px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font-variant-numeric: tabular-nums; }
+.peso input:focus { outline: none; border-color: var(--c); }
+.peso .kg { font-size: 13px; color: var(--ink-2); }
+.peso .guardar { font: 700 13px var(--body); background: var(--c); color: var(--paper); border: none; border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+.peso .last { margin: 0; font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.peso .last b { color: var(--ink); }
 .sets span { font-size: 12px; color: var(--ink-2); margin-right: 4px; font-weight: 600; }
 .set { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--line); background: none; color: var(--ink-2); font: 700 13px var(--body); cursor: pointer; font-variant-numeric: tabular-nums; }
 .set[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--paper); }
@@ -317,6 +326,21 @@ let store = {};
 try { store = JSON.parse(localStorage.getItem('plan6x6') || '{}'); } catch (e) { store = {}; }
 const save = () => { try { localStorage.setItem('plan6x6', JSON.stringify(store)); } catch (e) {} };
 
+// Pesos: historial por ejercicio { 'abs-Sit-up con disco': [{ w: 10, d: '2026-10-30' }, ...] }
+let pesos = {};
+try { pesos = JSON.parse(localStorage.getItem('plan6x6-pesos') || '{}'); } catch (e) { pesos = {}; }
+const savePesos = () => { try { localStorage.setItem('plan6x6-pesos', JSON.stringify(pesos)); } catch (e) {} };
+const fmtW = w => String(w).replace('.', ',');
+const fmtD = d => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+function lastText(k) {
+  const h = pesos[k] || [];
+  if (!h.length) return 'Aún sin peso apuntado.';
+  const a = h[h.length - 1], b = h[h.length - 2];
+  let t = `Última vez: <b>${fmtW(a.w)} kg</b> · ${fmtD(a.d)}`;
+  if (b) t += ` <span>(antes ${fmtW(b.w)} kg)</span>`;
+  return t;
+}
+
 // Fuente de titulares sin bloquear la carga: la página se pinta antes con la fuente del sistema.
 const fl = document.createElement('link');
 fl.rel = 'stylesheet';
@@ -342,6 +366,15 @@ main.innerHTML = [...DAYS].sort((a, b) => a.tag.localeCompare(b.tag)).map(d => `
             <h3>${e.n}</h3>
             <div class="meta"><span class="chip">${e.m}</span><span class="chip rest">Descanso ${e.r}</span></div>
             <p class="tip">${e.t}</p>
+            <div class="peso">
+              <div class="peso-row">
+                <label for="peso-${d.id}-${i}">Peso</label>
+                <input id="peso-${d.id}-${i}" type="text" inputmode="decimal" placeholder="0" value="${(pesos[d.id + '-' + e.n] || []).slice(-1).map(x => fmtW(x.w)).join('')}">
+                <span class="kg">kg</span>
+                <button class="guardar" type="button" data-peso="${d.id}-${e.n}" data-input="peso-${d.id}-${i}">Guardar</button>
+              </div>
+              <p class="last" id="last-${d.id}-${i}">${lastText(d.id + '-' + e.n)}</p>
+            </div>
             <div class="sets"><span>Series</span>
               ${[1, 2, 3, 4, 5, 6].map(s => {
                 const k = `${d.id}-${i}-${s}`;
@@ -356,6 +389,21 @@ main.innerHTML = [...DAYS].sort((a, b) => a.tag.localeCompare(b.tag)).map(d => `
 main.addEventListener('click', ev => {
   const b = ev.target.closest('button');
   if (!b) return;
+  if (b.dataset.peso) {
+    const inp = document.getElementById(b.dataset.input);
+    const w = parseFloat(inp.value.replace(',', '.'));
+    if (!(w >= 0)) { inp.focus(); return; }
+    const k = b.dataset.peso, hoy = new Date().toLocaleDateString('sv');
+    const h = pesos[k] = pesos[k] || [];
+    if (h.length && h[h.length - 1].d === hoy) h[h.length - 1].w = w; else h.push({ w, d: hoy });
+    if (h.length > 30) h.splice(0, h.length - 30);
+    savePesos();
+    inp.value = fmtW(w);
+    document.getElementById(b.dataset.input.replace('peso-', 'last-')).innerHTML = lastText(k);
+    b.textContent = 'Guardado ✓';
+    setTimeout(() => { b.textContent = 'Guardar'; }, 1500);
+    return;
+  }
   if (b.dataset.k) {
     const on = b.getAttribute('aria-pressed') !== 'true';
     b.setAttribute('aria-pressed', on);
