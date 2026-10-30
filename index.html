@@ -1,0 +1,373 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Training</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Training">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: cartel de gimnasio. Cabecera con la semana, luego un bloque por día con 6 fichas en orden de ejecución. */
+:root {
+  --bg: #eef0ee;
+  --paper: #ffffff;
+  --ink: #1b1f1d;
+  --ink-2: #5d6661;
+  --line: #d5dad6;
+  --far: #9aa39e;
+  --d1: #2459c9;
+  --d2: #d8571b;
+  --d3: #1d8a52;
+  --d4: #b62d77;
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131615; --paper: #1c201e; --ink: #ecefed; --ink-2: #a3aca7; --line: #2f3532; --far: #66706b;
+    --d1: #7aa2ff; --d2: #ff9257; --d3: #4fd08e; --d4: #ff73bd;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131615; --paper: #1c201e; --ink: #ecefed; --ink-2: #a3aca7; --line: #2f3532; --far: #66706b;
+  --d1: #7aa2ff; --d2: #ff9257; --d3: #4fd08e; --d4: #ff73bd;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 0.95; }
+header { display: flex; flex-direction: column; gap: 18px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+h1 { font-size: clamp(48px, 9vw, 104px); font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; }
+h1 span { color: var(--d2); }
+.lede { max-width: 62ch; margin: 0; color: var(--ink-2); font-size: 16px; }
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.wd { border: 1.5px solid var(--line); border-radius: 6px; padding: 8px 8px 10px; min-height: 76px; display: flex; flex-direction: column; justify-content: space-between; color: var(--ink-2); text-decoration: none; }
+.wd b { font-family: var(--display); font-size: 22px; font-weight: 800; color: var(--ink); }
+.wd small { font-size: 12px; font-weight: 600; line-height: 1.2; }
+a.wd { background: var(--c); border-color: var(--c); color: var(--paper); }
+a.wd b { color: var(--paper); }
+a.wd:hover { filter: brightness(1.08); }
+a.wd:focus-visible, button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.rule { background: var(--paper); border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.rule strong { font-family: var(--display); font-size: 26px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.rule p { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+section.day { display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 16px; }
+.dayhead { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; border-bottom: 4px solid var(--c); padding-bottom: 10px; }
+.dayhead .tag { font-family: var(--display); font-weight: 800; font-size: 18px; color: var(--c); text-transform: uppercase; letter-spacing: .04em; }
+.dayhead h2 { font-size: clamp(38px, 6vw, 60px); font-weight: 900; text-transform: uppercase; }
+.dayhead p { margin: 4px 0 0; color: var(--ink-2); max-width: 60ch; }
+.reset { font: 600 13px var(--body); background: none; border: 1.5px solid var(--line); color: var(--ink-2); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.reset:hover { border-color: var(--c); color: var(--ink); }
+
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .week { grid-template-columns: repeat(4, minmax(0, 1fr)); } .wd.off { display: none; } }
+
+.card { background: var(--paper); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.art { position: relative; background: color-mix(in srgb, var(--c) 9%, var(--paper)); aspect-ratio: 16 / 11; max-width: 100%; }
+.art svg { width: 100%; height: 100%; display: block; }
+.num { position: absolute; top: 10px; left: 12px; font-family: var(--display); font-weight: 900; font-size: 34px; color: var(--c); line-height: 1; }
+.scheme { position: absolute; top: 12px; right: 12px; font-family: var(--display); font-weight: 800; font-size: 18px; background: var(--ink); color: var(--paper); border-radius: 4px; padding: 2px 8px; font-variant-numeric: tabular-nums; }
+.body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.body h3 { font-size: 27px; font-weight: 800; text-transform: uppercase; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12px; font-weight: 600; border-radius: 999px; padding: 3px 10px; background: var(--bg); color: var(--ink-2); }
+.chip.rest { background: color-mix(in srgb, var(--c) 15%, var(--paper)); color: var(--ink); }
+.tip { margin: 0; font-size: 14px; }
+.sets { display: flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 6px; }
+.sets span { font-size: 12px; color: var(--ink-2); margin-right: 4px; font-weight: 600; }
+.set { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--line); background: none; color: var(--ink-2); font: 700 13px var(--body); cursor: pointer; font-variant-numeric: tabular-nums; }
+.set[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: var(--paper); }
+
+/* figura */
+.fig line, .fig polyline { stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.fig .limb { stroke: var(--ink); stroke-width: 7; }
+.fig .far { stroke: var(--far); stroke-width: 6.5; }
+.fig .torso { stroke: var(--ink); stroke-width: 10; }
+.fig .head { fill: var(--ink); }
+.fig .floor { stroke: var(--line); stroke-width: 2; }
+.fig .eq { stroke: var(--c); stroke-width: 4; fill: none; stroke-linecap: round; }
+.fig .eqf { fill: var(--c); }
+.fig .gear { stroke: var(--ink-2); stroke-width: 4; fill: none; stroke-linecap: round; }
+.fig .gearf { fill: var(--line); stroke: var(--ink-2); stroke-width: 2; }
+.fig .mv { stroke: var(--c); stroke-width: 2.5; fill: none; stroke-dasharray: 4 4; }
+.fig .mvh { fill: var(--c); }
+
+footer { color: var(--ink-2); font-size: 13px; max-width: 70ch; }
+@media (prefers-reduced-motion: no-preference) { .set { transition: background .15s, border-color .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Plan <span>6×6</span></h1>
+    <nav class="week" aria-label="Semana">
+      <a class="wd" href="#superior" style="--c:var(--d1)"><b>Lun</b><small>Espalda y brazos</small></a>
+      <div class="wd off"><b>Mar</b><small>Descanso</small></div>
+      <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Mié</b><small>Glúteo</small></a>
+      <div class="wd off"><b>Jue</b><small>Descanso</small></div>
+      <a class="wd" href="#abs" style="--c:var(--d2)"><b>Vie</b><small>Abdominales</small></a>
+      <div class="wd off"><b>Sáb</b><small>Descanso</small></div>
+      <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Dom</b><small>Piernas</small></a>
+    </nav>
+  </header>
+
+  <main id="days" class="wrap"></main>
+
+</div>
+
+<script>
+const P = (x, y) => [x, y];
+const ln = (a, b, c) => `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" class="${c}"/>`;
+const pl = (pts, c) => `<polyline points="${pts.map(p => p.join(',')).join(' ')}" class="${c}"/>`;
+const plate = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" class="eqf"/><circle cx="${x}" cy="${y}" r="${r * 0.3}" fill="var(--paper)"/>`;
+const db = (x, y, v) => v
+  ? `<line x1="${x}" y1="${y - 7}" x2="${x}" y2="${y + 7}" class="eq"/><rect x="${x - 5}" y="${y - 10}" width="10" height="5" rx="1.5" class="eqf"/><rect x="${x - 5}" y="${y + 5}" width="10" height="5" rx="1.5" class="eqf"/>`
+  : `<line x1="${x - 7}" y1="${y}" x2="${x + 7}" y2="${y}" class="eq"/><rect x="${x - 10}" y="${y - 5}" width="5" height="10" rx="1.5" class="eqf"/><rect x="${x + 5}" y="${y - 5}" width="5" height="10" rx="1.5" class="eqf"/>`;
+const bench = (x1, x2, y) => `<rect x="${x1}" y="${y}" width="${x2 - x1}" height="6" rx="2" class="gearf"/><line x1="${x1 + 6}" y1="${y + 6}" x2="${x1 + 6}" y2="110" class="gear"/><line x1="${x2 - 6}" y1="${y + 6}" x2="${x2 - 6}" y2="110" class="gear"/>`;
+const pullbar = (x1, x2) => `<line x1="${x1}" y1="12" x2="${x2}" y2="12" class="gear"/><line x1="${x1}" y1="12" x2="${x1}" y2="110" class="gear"/><line x1="${x2}" y1="12" x2="${x2}" y2="110" class="gear"/>`;
+const arrow = (pts) => {
+  const [a, b] = [pts[pts.length - 2], pts[pts.length - 1]];
+  const ang = Math.atan2(b[1] - a[1], b[0] - a[0]);
+  const h = (d) => [b[0] - 7 * Math.cos(ang + d), b[1] - 7 * Math.sin(ang + d)];
+  return pl(pts, 'mv') + `<polygon points="${b.join(',')} ${h(0.5).join(',')} ${h(-0.5).join(',')}" class="mvh"/>`;
+};
+
+// Pose: h cabeza, n hombros, p cadera, a/l brazo y pierna cercanos [codo, mano] / [rodilla, pie];
+// a2/l2 lejanos (si faltan se copian desplazados). back = material detrás, front = delante.
+function fig(o) {
+  const sh = (seg, dx) => seg.map(([x, y]) => [x + dx, y]);
+  const a2 = o.a2 || sh(o.a, -4), l2 = o.l2 || sh(o.l, -4);
+  const farC = o.flat ? 'limb' : 'far';
+  return `<svg viewBox="0 0 160 120" class="fig" role="img" aria-label="${o.label}">
+    <line x1="6" y1="110" x2="154" y2="110" class="floor"/>
+    ${o.back || ''}
+    ${pl([o.n, ...a2], farC)}${pl([o.p, ...l2], farC)}
+    ${ln(o.p, o.n, 'torso')}
+    ${pl([o.p, ...o.l], 'limb')}${pl([o.n, ...o.a], 'limb')}
+    <circle cx="${o.h[0]}" cy="${o.h[1]}" r="8.5" class="head"/>
+    ${o.front || ''}
+  </svg>`;
+}
+
+const DAYS = [
+  { id: 'superior', c: 'var(--d1)', tag: 'Día 1 · Lunes', title: 'Espalda y brazos',
+    intro: 'Primero los tirones grandes de espalda, después bíceps y tríceps cuando ya están calientes.',
+    ex: [
+      { n: 'Dominadas', m: 'Dorsal, bíceps', r: '2–3 min',
+        t: 'Agarre algo más ancho que los hombros. Baja los hombros antes de tirar y sube hasta pasar la barbilla. Si no llegas a 6, usa banda o máquina asistida.',
+        f: { label: 'Dominada en la barra', flat: true, h: P(80, 24), n: P(80, 36), p: P(80, 68),
+             a: [P(60, 36), P(62, 13)], a2: [P(100, 36), P(98, 13)],
+             l: [P(76, 88), P(84, 100)], l2: [P(84, 88), P(92, 98)],
+             back: pullbar(40, 120) + `<line x1="40" y1="12" x2="120" y2="12" class="eq"/>` } },
+      { n: 'Remo con barra', m: 'Dorsal, romboides', r: '2–3 min',
+        t: 'Inclina el tronco unos 45° con la espalda neutra. Lleva la barra al ombligo con los codos pegados y aprieta las escápulas arriba.',
+        f: { label: 'Remo con barra inclinado', h: P(110, 44), n: P(98, 52), p: P(62, 68),
+             a: [P(82, 48), P(88, 68)], l: [P(76, 86), P(72, 108)],
+             front: plate(88, 74, 11) + arrow([[100, 92], [100, 76]]) } },
+      { n: 'Remo a una mano', m: 'Dorsal, deltoides posterior', r: '90 s',
+        t: 'Rodilla y mano en el banco, espalda plana. Tira de la mancuerna hacia la cadera, no hacia el pecho. 6 por lado.',
+        f: { label: 'Remo con mancuerna apoyado en banco', h: P(48, 40), n: P(58, 46), p: P(94, 48),
+             a: [P(72, 40), P(70, 58)], a2: [P(56, 60), P(54, 74)],
+             l: [P(96, 72), P(122, 72)], l2: [P(104, 78), P(108, 108)],
+             back: bench(40, 128, 76), front: db(70, 60, true) } },
+      { n: 'Curl con barra', m: 'Bíceps', r: '90 s',
+        t: 'Codos fijos junto al cuerpo y sin balancear el tronco. Sube en un segundo y baja en dos o tres.',
+        f: { label: 'Curl de bíceps con barra de pie', h: P(80, 18), n: P(80, 30), p: P(80, 64),
+             a: [P(84, 48), P(100, 36)], l: [P(82, 86), P(82, 108)],
+             front: plate(102, 36, 10) + arrow([[118, 60], [118, 42]]) } },
+      { n: 'Press francés', m: 'Tríceps', r: '90 s',
+        t: 'Tumbado en el banco, brazos casi verticales. Solo se mueven los codos: baja la barra hacia la frente y extiende sin abrir los codos.',
+        f: { label: 'Press francés tumbado en banco', h: P(36, 70), n: P(48, 74), p: P(84, 74),
+             a: [P(46, 50), P(32, 56)], l: [P(102, 74), P(104, 108)],
+             back: bench(26, 96, 80), front: plate(30, 56, 8) } },
+      { n: 'Fondos en banco', m: 'Tríceps, pecho', r: '90 s',
+        t: 'Manos en el borde del banco, cadera cerca de él. Baja hasta que los codos formen 90° y empuja. Para más carga, apoya los pies en otro banco.',
+        f: { label: 'Fondos de tríceps en banco', h: P(68, 54), n: P(66, 66), p: P(66, 94),
+             a: [P(48, 82), P(52, 70)], l: [P(92, 98), P(122, 106)],
+             back: bench(18, 58, 70) + arrow([[82, 40], [82, 56]]) } },
+    ] },
+  { id: 'abs', c: 'var(--d2)', tag: 'Día 3 · Viernes', title: 'Abdominales',
+    intro: 'Todos con carga: elige un peso con el que la 6.ª repetición cueste. Movimientos lentos y controlados, exhala al contraer.',
+    ex: [
+      { n: 'Crunch en polea alta', m: 'Recto abdominal', r: '60–90 s',
+        t: 'De rodillas frente a la polea, cuerda junto a la cabeza. Enrolla el tronco llevando los codos hacia los muslos sin mover la cadera. Peso con el que la 6.ª cueste.',
+        f: { label: 'Crunch de rodillas en polea alta con cuerda', h: P(108, 96), n: P(100, 86), p: P(78, 82),
+             a: [P(92, 74), P(104, 80)], l: [P(76, 106), P(52, 106)],
+             back: `<line x1="138" y1="12" x2="138" y2="110" class="gear"/><line x1="138" y1="12" x2="110" y2="12" class="gear"/><rect x="126" y="70" width="16" height="30" rx="2" class="gearf"/>`,
+             front: `<line x1="110" y1="14" x2="105" y2="80" class="eq"/>` + arrow([[124, 52], [118, 74]]) } },
+      { n: 'Sit-up con disco', m: 'Recto abdominal', r: '60–90 s',
+        t: 'Tumbada con rodillas dobladas y pies sujetos bajo un banco o una barra. Disco abrazado al pecho: sube hasta quedar sentada y baja despacio, en 3 s.',
+        f: { label: 'Sit-up con disco abrazado al pecho', h: P(52, 66), n: P(58, 77), p: P(76, 102),
+             a: [P(70, 88), P(66, 78)], l: [P(96, 80), P(110, 106)],
+             front: plate(64, 80, 8) + arrow([[34, 100], [40, 76]]) } },
+      { n: 'Pallof press', m: 'Oblicuos, antirrotación', r: '60 s',
+        t: 'De lado a la polea, agarre a la altura del pecho. Estira los brazos al frente sin dejar que el tronco gire hacia la polea, aguanta 2 s y vuelve. 6 por lado.',
+        f: { label: 'Pallof press de pie con polea lateral', flat: true, h: P(80, 20), n: P(80, 32), p: P(80, 64),
+             a: [P(72, 46), P(80, 42)], a2: [P(88, 46), P(80, 42)],
+             l: [P(72, 86), P(68, 108)], l2: [P(88, 86), P(92, 108)],
+             back: `<line x1="140" y1="12" x2="140" y2="110" class="gear"/><rect x="128" y="74" width="16" height="30" rx="2" class="gearf"/>`,
+             front: `<line x1="140" y1="42" x2="84" y2="42" class="eq"/><circle cx="80" cy="42" r="4" class="eqf"/>` } },
+      { n: 'Giro ruso con peso', m: 'Oblicuos', r: '60 s',
+        t: 'Sentado en V, pies en el aire. Gira el tronco entero, no solo los brazos, y toca el suelo a cada lado. 6 por lado.',
+        f: { label: 'Giro ruso sentado con mancuerna', h: P(54, 58), n: P(60, 70), p: P(74, 102),
+             a: [P(72, 82), P(88, 90)], l: [P(96, 82), P(116, 90)],
+             front: db(90, 90, false) + arrow([[70, 112], [102, 112]]) } },
+      { n: 'Dead bug', m: 'Transverso, estabilidad', r: '60 s',
+        t: 'Con una mancuerna o disco en las manos y la lumbar pegada al suelo. Extiende brazo y pierna contrarios muy despacio, 3 s de bajada. 6 por lado.',
+        f: { label: 'Dead bug tumbado boca arriba', h: P(36, 98), n: P(46, 101), p: P(82, 101),
+             a: [P(32, 96), P(16, 92)], a2: [P(48, 84), P(50, 64)],
+             l: [P(104, 98), P(126, 94)], l2: [P(84, 78), P(106, 78)],
+             front: plate(50, 62, 7) + plate(16, 92, 7) } },
+      { n: 'Plancha con remo', m: 'Core completo, oblicuos', r: '60–90 s',
+        t: 'Plancha alta con las manos sobre dos mancuernas y pies algo abiertos. Rema una hacia la cadera sin rotar la pelvis, apoya y cambia. 6 por lado.',
+        f: { label: 'Plancha con remo sobre mancuernas', h: P(118, 72), n: P(108, 78), p: P(64, 86),
+             a: [P(96, 70), P(102, 88)], a2: [P(110, 92), P(110, 103)],
+             l: [P(42, 96), P(20, 106)],
+             back: db(110, 105, false), front: db(102, 90, false) + arrow([[124, 104], [124, 84]]) } },
+    ] },
+  { id: 'piernas', c: 'var(--d3)', tag: 'Día 4 · Domingo', title: 'Piernas',
+    intro: 'Cuádriceps, isquios y gemelos. La sentadilla es el ejercicio más pesado de la semana: dale los descansos completos.',
+    ex: [
+      { n: 'Sentadilla con barra', m: 'Cuádriceps, glúteo', r: '3 min',
+        t: 'Barra sobre los trapecios, pies a la anchura de los hombros. Baja con el pecho alto hasta que la cadera pase la rodilla y sube empujando el suelo.',
+        f: { label: 'Sentadilla profunda con barra en la espalda', h: P(96, 40), n: P(88, 52), p: P(70, 82),
+             a: [P(76, 64), P(86, 52)], l: [P(98, 86), P(82, 108)],
+             front: plate(84, 50, 13) } },
+      { n: 'Peso muerto rumano', m: 'Isquiotibiales, glúteo', r: '2–3 min',
+        t: 'Rodillas apenas flexionadas. Lleva la cadera atrás deslizando la barra por los muslos hasta notar tensión detrás de las piernas, y vuelve.',
+        f: { label: 'Peso muerto rumano con la cadera atrás', h: P(114, 42), n: P(104, 48), p: P(74, 64),
+             a: [P(104, 66), P(104, 84)], l: [P(80, 86), P(80, 108)],
+             front: plate(104, 88, 12) } },
+      { n: 'Sentadilla búlgara', m: 'Cuádriceps, glúteo', r: '90 s',
+        t: 'Pie trasero sobre el banco, delantero adelantado. Baja vertical hasta que la rodilla trasera casi toque el suelo. 6 por pierna.',
+        f: { label: 'Sentadilla búlgara con el pie trasero en banco', h: P(74, 34), n: P(72, 46), p: P(70, 80),
+             a: [P(72, 62), P(72, 78)], l: [P(94, 82), P(96, 108)], l2: [P(62, 100), P(40, 76)],
+             back: bench(18, 50, 76), front: db(72, 80, true) } },
+      { n: 'Subida al banco', m: 'Cuádriceps, glúteo', r: '90 s',
+        t: 'Pie entero sobre un banco a la altura de la rodilla. Sube empujando solo con la pierna de arriba, sin impulsarte con la de abajo. 6 por pierna.',
+        f: { label: 'Subida al banco con mancuernas', h: P(79, 16), n: P(78, 28), p: P(78, 60),
+             a: [P(80, 44), P(80, 60)], l: [P(98, 62), P(100, 80)], l2: [P(72, 84), P(64, 108)],
+             back: `<rect x="86" y="80" width="40" height="30" rx="2" class="gearf"/>`, front: db(80, 62, true) } },
+      { n: 'Sentadilla goblet con pausa', m: 'Cuádriceps', r: '90 s',
+        t: 'Mancuerna pegada al pecho. Baja, aguanta 2 s abajo con el tronco erguido y sube. La pausa quita el rebote y hace que 6 repeticiones cuesten.',
+        f: { label: 'Sentadilla goblet con mancuerna al pecho', h: P(88, 42), n: P(82, 54), p: P(70, 86),
+             a: [P(94, 72), P(94, 60)], l: [P(100, 88), P(84, 108)],
+             front: db(98, 62, true) } },
+      { n: 'Elevación de talones', m: 'Gemelos, sóleo', r: '60 s',
+        t: 'Puntas en el borde de un escalón. Baja el talón todo lo posible, sube a la máxima altura y aguanta 1 s arriba. Con mancuernas para cargar.',
+        f: { label: 'Elevación de talones en un escalón', h: P(78, 12), n: P(78, 24), p: P(78, 52),
+             a: [P(81, 38), P(81, 54)], l: [P(78, 72), P(78, 90)],
+             back: `<rect x="66" y="98" width="44" height="12" rx="2" class="gearf"/>`,
+             front: ln(P(78, 90), P(88, 98), 'limb') + db(82, 56, true) + arrow([[110, 92], [110, 70]]) } },
+    ] },
+  { id: 'gluteo', c: 'var(--d4)', tag: 'Día 2 · Miércoles', title: 'Glúteo',
+    intro: 'Empuje de cadera pesado al principio y trabajo de glúteo medio al final. Aprieta el glúteo un segundo en la posición alta de cada repetición.',
+    ex: [
+      { n: 'Hip thrust con barra', m: 'Glúteo mayor', r: '2–3 min',
+        t: 'Espalda alta en el banco, barra sobre la cadera con almohadilla. Sube hasta que tronco y muslos queden en línea, barbilla metida y sin arquear la lumbar.',
+        f: { label: 'Hip thrust con barra sobre la cadera', h: P(34, 70), n: P(46, 76), p: P(80, 74),
+             a: [P(64, 70), P(78, 64)], l: [P(102, 76), P(104, 108)],
+             back: bench(10, 46, 80), front: plate(80, 62, 12) + arrow([[124, 96], [124, 74]]) } },
+      { n: 'Peso muerto sumo', m: 'Glúteo, aductores', r: '2–3 min',
+        t: 'Pies muy abiertos y puntas hacia fuera. Kettlebell o mancuerna entre los pies. Sube empujando las rodillas hacia fuera y extiende la cadera arriba.',
+        f: { label: 'Peso muerto sumo con kettlebell', flat: true, h: P(80, 30), n: P(80, 42), p: P(80, 72),
+             a: [P(72, 58), P(78, 76)], a2: [P(88, 58), P(82, 76)],
+             l: [P(60, 86), P(52, 108)], l2: [P(100, 86), P(108, 108)],
+             front: `<path d="M74 82 a6 6 0 0 1 12 0" class="eq"/><circle cx="80" cy="90" r="8" class="eqf"/>` } },
+      { n: 'Patada de glúteo', m: 'Glúteo mayor', r: '60–90 s',
+        t: 'A cuatro patas con tobillera o banda. Empuja la planta del pie hacia el techo con la rodilla a 90°, sin girar la cadera ni arquear la espalda. 6 por lado.',
+        f: { label: 'Patada de glúteo a cuatro patas', h: P(110, 68), n: P(98, 74), p: P(64, 74),
+             a: [P(99, 91), P(100, 108)], l: [P(40, 70), P(38, 46)], l2: [P(64, 104), P(42, 106)],
+             front: arrow([[24, 64], [24, 42]]) } },
+      { n: 'Puente a una pierna', m: 'Glúteo mayor, isquios', r: '60–90 s',
+        t: 'Tumbado, un pie apoyado y la otra pierna estirada. Empuja con el talón hasta alinear rodilla, cadera y hombro, y aguanta 2 s. 6 por lado.',
+        f: { label: 'Puente de glúteo a una pierna', h: P(26, 100), n: P(36, 102), p: P(72, 84),
+             a: [P(50, 106), P(64, 107)], l: [P(96, 76), P(122, 66)], l2: [P(90, 70), P(100, 108)] } },
+      { n: 'Paso lateral con banda', m: 'Glúteo medio', r: '60 s',
+        t: 'Banda por encima de las rodillas, media sentadilla. Da pasos laterales amplios sin juntar del todo los pies ni dejar que las rodillas se cierren. 6 pasos por lado.',
+        f: { label: 'Paso lateral con banda en las rodillas', flat: true, h: P(80, 30), n: P(80, 42), p: P(80, 72),
+             a: [P(66, 56), P(72, 70)], a2: [P(94, 56), P(88, 70)],
+             l: [P(64, 88), P(58, 108)], l2: [P(96, 88), P(102, 108)],
+             front: `<line x1="64" y1="86" x2="96" y2="86" class="eq" style="stroke-width:5"/>` + arrow([[112, 64], [140, 64]]) } },
+      { n: 'Hiperextensión de glúteo', m: 'Glúteo, isquios', r: '60–90 s',
+        t: 'En el banco a 45°, cadera justo por encima del apoyo y espalda alta algo redondeada. Sube apretando glúteo, no arqueando la lumbar. Disco al pecho para cargar.',
+        f: { label: 'Hiperextensión en banco de 45 grados', h: P(116, 40), n: P(106, 48), p: P(74, 74),
+             a: [P(98, 60), P(104, 52)], l: [P(56, 90), P(38, 104)],
+             back: `<line x1="34" y1="108" x2="80" y2="72" class="gear"/><line x1="70" y1="80" x2="70" y2="110" class="gear"/><rect x="68" y="72" width="18" height="9" rx="4" class="gearf" transform="rotate(-38 77 76)"/>`,
+             front: plate(102, 54, 7) } },
+    ] },
+];
+
+let store = {};
+try { store = JSON.parse(localStorage.getItem('plan6x6') || '{}'); } catch (e) { store = {}; }
+const save = () => { try { localStorage.setItem('plan6x6', JSON.stringify(store)); } catch (e) {} };
+
+// Fuente de titulares sin bloquear la carga: la página se pinta antes con la fuente del sistema.
+const fl = document.createElement('link');
+fl.rel = 'stylesheet';
+fl.href = 'https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&display=swap';
+document.head.appendChild(fl);
+
+const main = document.getElementById('days');
+main.innerHTML = [...DAYS].sort((a, b) => a.tag.localeCompare(b.tag)).map(d => `
+  <section class="day" id="${d.id}" style="--c:${d.c}">
+    <div class="dayhead">
+      <div>
+        <div class="tag">${d.tag}</div>
+        <h2>${d.title}</h2>
+        <p>${d.intro}</p>
+      </div>
+      <button class="reset" type="button" id="reset-${d.id}" data-day="${d.id}">Reiniciar series</button>
+    </div>
+    <div class="grid">
+      ${d.ex.map((e, i) => `
+        <article class="card">
+          <div class="art"><span class="num">${i + 1}</span><span class="scheme">6×6</span>${fig(e.f)}</div>
+          <div class="body">
+            <h3>${e.n}</h3>
+            <div class="meta"><span class="chip">${e.m}</span><span class="chip rest">Descanso ${e.r}</span></div>
+            <p class="tip">${e.t}</p>
+            <div class="sets"><span>Series</span>
+              ${[1, 2, 3, 4, 5, 6].map(s => {
+                const k = `${d.id}-${i}-${s}`;
+                return `<button class="set" type="button" id="set-${k}" data-k="${k}" aria-pressed="${!!store[k]}" aria-label="Serie ${s} de ${e.n}">${s}</button>`;
+              }).join('')}
+            </div>
+          </div>
+        </article>`).join('')}
+    </div>
+  </section>`).join('');
+
+main.addEventListener('click', ev => {
+  const b = ev.target.closest('button');
+  if (!b) return;
+  if (b.dataset.k) {
+    const on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on);
+    if (on) store[b.dataset.k] = 1; else delete store[b.dataset.k];
+    save();
+  } else if (b.dataset.day) {
+    const day = b.dataset.day;
+    Object.keys(store).forEach(k => { if (k.startsWith(day + '-')) delete store[k]; });
+    document.querySelectorAll(`#${day} .set`).forEach(s => s.setAttribute('aria-pressed', 'false'));
+    save();
+  }
+});
+</script>
+
+</body></html>
