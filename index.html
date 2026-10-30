@@ -328,6 +328,14 @@ const DAYS = [
 ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault(), { passive: false }));
 document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 
+// Actualización automática: GitHub Pages guarda la página en caché unos minutos.
+// Si version.txt no coincide con esta versión, se recarga con una URL nueva.
+const VERSION = '3';
+fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
+  v = v.trim();
+  if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
+}).catch(() => {});
+
 let store = {};
 try { store = JSON.parse(localStorage.getItem('plan6x6') || '{}'); } catch (e) { store = {}; }
 const save = () => { try { localStorage.setItem('plan6x6', JSON.stringify(store)); } catch (e) {} };
