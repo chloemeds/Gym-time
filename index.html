@@ -123,6 +123,16 @@ section.day { display: flex; flex-direction: column; gap: 18px; scroll-margin-to
 .fig .mvh { fill: var(--c); }
 
 footer { color: var(--ink-2); font-size: 13px; max-width: 70ch; }
+/* Un día a la vez: el resto de días queda oculto y el día elegido se resalta en la semana. */
+section.day:not(.on) { display: none; }
+a.wd:not(.on) { opacity: .4; }
+a.wd.on { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--c); }
+.voto { display: flex; align-items: center; gap: 8px; padding-top: 4px; }
+.voto span { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.voto button { font-size: 20px; line-height: 1; width: 44px; height: 38px; border-radius: 999px; border: 2px solid var(--line); background: none; cursor: pointer; filter: grayscale(1); opacity: .6; }
+.voto button[aria-pressed="true"] { border-color: var(--c); background: color-mix(in srgb, var(--c) 15%, var(--paper)); filter: none; opacity: 1; }
+.valoraciones { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: var(--ink-2); font-size: 13px; }
+.valoraciones button { font: 600 13px var(--body); background: none; border: 1.5px solid var(--line); color: var(--ink-2); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
 @media (prefers-reduced-motion: no-preference) { .set { transition: background .15s, border-color .15s; } }
 </style>
 
@@ -130,17 +140,22 @@ footer { color: var(--ink-2); font-size: 13px; max-width: 70ch; }
   <header>
     <h1>Plan <span>6×6</span></h1>
     <nav class="week" aria-label="Semana">
-      <a class="wd" href="#superior" style="--c:var(--d1)"><b>Lun</b><small>Espalda y brazos</small></a>
-      <div class="wd off"><b>Mar</b><small>Descanso</small></div>
+      <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Lun</b><small>Piernas</small></a>
+      <div class="wd off"><b>Mar</b><small>Cardio</small></div>
       <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Mié</b><small>Glúteo</small></a>
-      <div class="wd off"><b>Jue</b><small>Descanso</small></div>
+      <div class="wd off"><b>Jue</b><small>Cardio</small></div>
       <a class="wd" href="#abs" style="--c:var(--d2)"><b>Vie</b><small>Abdominales</small></a>
-      <div class="wd off"><b>Sáb</b><small>Descanso</small></div>
-      <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Dom</b><small>Piernas</small></a>
+      <a class="wd" href="#superior" style="--c:var(--d1)"><b>Sáb</b><small>Espalda y brazos</small></a>
+      <div class="wd off"><b>Dom</b><small>Descanso</small></div>
     </nav>
   </header>
 
   <main id="days" class="wrap"></main>
+
+  <footer class="valoraciones">
+    <button type="button" id="copiar-votos">Copiar mis 👍/👎</button>
+    <span id="votos-msg">Pégalo en el chat cuando quieras cambiar ejercicios.</span>
+  </footer>
 
 </div>
 
@@ -179,7 +194,7 @@ function fig(o) {
 }
 
 const DAYS = [
-  { id: 'superior', c: 'var(--d1)', tag: 'Día 1 · Lunes', title: 'Espalda y brazos',
+  { id: 'superior', c: 'var(--d1)', tag: 'Día 4 · Sábado', title: 'Espalda y brazos',
     intro: 'Primero los tirones grandes de espalda, después bíceps y tríceps cuando ya están calientes.',
     ex: [
       { n: 'Dominadas', m: 'Dorsal, bíceps', r: '2–3 min',
@@ -254,7 +269,7 @@ const DAYS = [
              l: [P(42, 96), P(20, 106)],
              back: db(110, 105, false), front: db(102, 90, false) + arrow([[124, 104], [124, 84]]) } },
     ] },
-  { id: 'piernas', c: 'var(--d3)', tag: 'Día 4 · Domingo', title: 'Piernas',
+  { id: 'piernas', c: 'var(--d3)', tag: 'Día 1 · Lunes', title: 'Piernas',
     intro: 'Cuádriceps, isquios y gemelos. La sentadilla es el ejercicio más pesado de la semana: dale los descansos completos.',
     ex: [
       { n: 'Sentadilla con barra', m: 'Cuádriceps, glúteo', r: '3 min',
@@ -333,7 +348,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '4';
+const VERSION = '5';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -347,6 +362,11 @@ const save = () => { try { localStorage.setItem('plan6x6', JSON.stringify(store)
 let pesos = {};
 try { pesos = JSON.parse(localStorage.getItem('plan6x6-pesos') || '{}'); } catch (e) { pesos = {}; }
 const savePesos = () => { try { localStorage.setItem('plan6x6-pesos', JSON.stringify(pesos)); } catch (e) {} };
+// Valoraciones por ejercicio (por nombre, así sobreviven a cambios de orden): { 'Pallof press': 'up' | 'down' }
+let votos = {};
+try { votos = JSON.parse(localStorage.getItem('plan6x6-votos') || '{}'); } catch (e) { votos = {}; }
+const saveVotos = () => { try { localStorage.setItem('plan6x6-votos', JSON.stringify(votos)); } catch (e) {} };
+
 const fmtW = w => String(w).replace('.', ',');
 const fmtD = d => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
 function lastText(k) {
@@ -399,6 +419,11 @@ main.innerHTML = [...DAYS].sort((a, b) => a.tag.localeCompare(b.tag)).map(d => `
               }).join('')}
               <button class="all" type="button" id="all-${d.id}-${i}" data-all="${d.id}-${i}" aria-pressed="${[1, 2, 3, 4, 5, 6].every(s => store[`${d.id}-${i}-${s}`])}" aria-label="Marcar las 6 series de ${e.n}">✓ Todas</button>
             </div>
+            <div class="voto" id="voto-${d.id}-${i}" ${[1, 2, 3, 4, 5, 6].every(s => store[`${d.id}-${i}-${s}`]) || votos[e.n] ? '' : 'hidden'}>
+              <span>¿Qué tal?</span>
+              <button type="button" id="up-${d.id}-${i}" data-voto="up" data-n="${e.n}" aria-pressed="${votos[e.n] === 'up'}" aria-label="Me gusta ${e.n}">👍</button>
+              <button type="button" id="down-${d.id}-${i}" data-voto="down" data-n="${e.n}" aria-pressed="${votos[e.n] === 'down'}" aria-label="No me gusta ${e.n}">👎</button>
+            </div>
           </div>
         </article>`).join('')}
     </div>
@@ -407,7 +432,43 @@ main.innerHTML = [...DAYS].sort((a, b) => a.tag.localeCompare(b.tag)).map(d => `
 const syncAll = ex => {
   const on = [1, 2, 3, 4, 5, 6].every(s => store[`${ex}-${s}`]);
   document.getElementById('all-' + ex).setAttribute('aria-pressed', on);
+  const v = document.getElementById('voto-' + ex);
+  v.hidden = !on && !votos[v.querySelector('button').dataset.n];
 };
+
+// Un solo día visible. Sin #día en la dirección se abre el de hoy o el siguiente entrenamiento.
+const BY_WEEKDAY = { 1: 'piernas', 3: 'gluteo', 5: 'abs', 6: 'superior' };
+function hoyId() {
+  for (let i = 0, wd = new Date().getDay(); i < 7; i++) {
+    const id = BY_WEEKDAY[(wd + i) % 7];
+    if (id) return id;
+  }
+}
+function showDay() {
+  const id = DAYS.some(d => d.id === location.hash.slice(1)) ? location.hash.slice(1) : hoyId();
+  document.querySelectorAll('section.day').forEach(s => s.classList.toggle('on', s.id === id));
+  document.querySelectorAll('a.wd').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + id));
+  window.scrollTo(0, 0);
+}
+document.querySelector('.week').addEventListener('click', ev => {
+  const a = ev.target.closest('a.wd');
+  if (!a) return;
+  ev.preventDefault();
+  history.replaceState(null, '', a.getAttribute('href'));
+  showDay();
+});
+window.addEventListener('hashchange', showDay);
+showDay();
+
+document.getElementById('copiar-votos').addEventListener('click', () => {
+  const up = Object.keys(votos).filter(n => votos[n] === 'up'), down = Object.keys(votos).filter(n => votos[n] === 'down');
+  const msg = document.getElementById('votos-msg');
+  if (!up.length && !down.length) { msg.textContent = 'Aún no has valorado ningún ejercicio.'; return; }
+  const txt = `Mis valoraciones del plan 6×6\n👍 ${up.join(', ') || '—'}\n👎 ${down.join(', ') || '—'}`;
+  const ok = () => { msg.textContent = 'Copiado. Pégalo en el chat.'; };
+  const fallback = () => { msg.textContent = txt; };
+  try { navigator.clipboard.writeText(txt).then(ok, fallback); } catch (e) { fallback(); }
+});
 
 main.addEventListener('click', ev => {
   const b = ev.target.closest('button');
@@ -427,6 +488,13 @@ main.addEventListener('click', ev => {
     setTimeout(() => { b.textContent = 'Guardar'; }, 1500);
     return;
   }
+  if (b.dataset.voto) {
+    const n = b.dataset.n, on = b.getAttribute('aria-pressed') !== 'true';
+    if (on) votos[n] = b.dataset.voto; else delete votos[n];
+    saveVotos();
+    b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', on && x === b));
+    return;
+  }
   if (b.dataset.k) {
     const on = b.getAttribute('aria-pressed') !== 'true';
     b.setAttribute('aria-pressed', on);
@@ -442,11 +510,13 @@ main.addEventListener('click', ev => {
     }
     b.setAttribute('aria-pressed', on);
     save();
+    syncAll(ex);
   } else if (b.dataset.day) {
     const day = b.dataset.day;
     Object.keys(store).forEach(k => { if (k.startsWith(day + '-')) delete store[k]; });
     document.querySelectorAll(`#${day} .set, #${day} .all`).forEach(s => s.setAttribute('aria-pressed', 'false'));
     save();
+    document.querySelectorAll(`#${day} .voto`).forEach(v => { v.hidden = !votos[v.querySelector('button').dataset.n]; });
   }
 });
 </script>
