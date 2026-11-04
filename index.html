@@ -233,12 +233,12 @@ const DAYS = [
   { id: 'abs', c: 'var(--d2)', tag: 'Día 2 · Miércoles', title: 'Abdominales',
     intro: 'Todos con carga: elige un peso con el que la 6.ª repetición cueste. Movimientos lentos y controlados, exhala al contraer.',
     ex: [
-      { n: 'Crunch en máquina', m: 'Recto abdominal', r: '60–90 s',
-        t: 'Sentada, pies sujetos y manos en las asas. Enrolla el tronco hacia las rodillas usando el abdomen, no los brazos, aguanta 1 s y vuelve despacio.',
-        f: { label: 'Crunch sentada en máquina de abdominales', h: P(98, 52), n: P(88, 54), p: P(68, 78),
-             a: [P(84, 64), P(92, 58)], l: [P(94, 80), P(98, 108)],
-             back: `<line x1="42" y1="20" x2="42" y2="110" class="gear"/><rect x="44" y="82" width="46" height="7" rx="2" class="gearf"/><line x1="62" y1="89" x2="62" y2="110" class="gear"/>`,
-             front: `<line x1="42" y1="24" x2="90" y2="50" class="eq"/>` + arrow([[112, 40], [116, 62]]) } },
+      { n: 'Crunch declinado con disco', m: 'Recto abdominal', r: '60–90 s',
+        t: 'En el banco declinado con los pies enganchados y un disco abrazado al pecho. Sube enrollando el tronco hasta media altura y baja despacio, sin tirar con el cuello.',
+        f: { label: 'Crunch en banco declinado con disco al pecho', h: P(54, 58), n: P(62, 68), p: P(88, 70),
+             a: [P(74, 78), P(72, 66)], l: [P(104, 56), P(116, 64)],
+             back: `<line x1="22" y1="100" x2="108" y2="66" class="gear" style="stroke-width:6"/><line x1="30" y1="98" x2="30" y2="110" class="gear"/><line x1="100" y1="70" x2="100" y2="110" class="gear"/><circle cx="118" cy="68" r="5" class="gearf"/>`,
+             front: plate(70, 66, 8) + arrow([[36, 80], [42, 56]]) } },
       { n: 'Leñador en polea', m: 'Oblicuos', r: '60 s',
         t: 'De lado a la polea alta, brazos estirados. Tira en diagonal hacia la cadera contraria girando el tronco, sin doblar los codos. 6 por lado.',
         f: { label: 'Leñador en polea alta en diagonal', flat: true, h: P(84, 24), n: P(84, 36), p: P(84, 66),
@@ -258,12 +258,12 @@ const DAYS = [
              a: [P(64, 40), P(75, 20)], a2: [P(96, 40), P(85, 20)],
              l: [P(74, 94), P(72, 108)], l2: [P(86, 94), P(88, 108)],
              front: `<ellipse cx="80" cy="22" rx="34" ry="9" class="mv"/><path d="M74 12 a6 6 0 0 1 12 0" class="eq"/><circle cx="80" cy="18" r="7" class="eqf"/>` } },
-      { n: 'Rodillas al pecho en silla romana', m: 'Recto abdominal inferior', r: '60–90 s',
-        t: 'Espalda apoyada y antebrazos en los apoyos, con tobilleras. Sube las rodillas al pecho redondeando un poco la pelvis y baja en 2–3 s sin balancearte.',
-        f: { label: 'Elevación de rodillas en silla romana con tobilleras', h: P(68, 28), n: P(66, 40), p: P(66, 74),
-             a: [P(70, 52), P(88, 50)], l: [P(88, 60), P(98, 80)],
-             back: `<line x1="58" y1="22" x2="58" y2="110" class="gear"/><line x1="58" y1="54" x2="96" y2="54" class="gear"/><line x1="96" y1="54" x2="96" y2="110" class="gear"/>`,
-             front: `<rect x="92" y="76" width="12" height="8" rx="3" class="eqf"/>` + arrow([[118, 96], [114, 70]]) } },
+      { n: 'Plancha lateral con mancuerna', m: 'Oblicuos', r: '60 s',
+        t: 'Plancha lateral sobre el antebrazo, mancuerna apoyada en la cadera de arriba. Baja la cadera casi hasta el suelo y súbela por encima de la línea del cuerpo. 6 por lado.',
+        f: { label: 'Plancha lateral con mancuerna en la cadera', h: P(36, 76), n: P(46, 84), p: P(86, 92),
+             a: [P(64, 86), P(82, 86)], a2: [P(46, 104), P(62, 106)],
+             l: [P(108, 99), P(130, 106)],
+             front: db(84, 84, false) + arrow([[104, 78], [104, 60]]) } },
       { n: 'Encogimiento en V con mancuerna', m: 'Recto abdominal', r: '60–90 s',
         t: 'Sentada, inclinada hacia atrás y con los pies en el aire. Mancuerna en el pecho: estira piernas y tronco a la vez y vuelve a juntar rodillas y pecho.',
         f: { label: 'Encogimiento en V sentada con mancuerna al pecho', h: P(56, 64), n: P(62, 76), p: P(76, 100),
@@ -349,7 +349,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '7';
+const VERSION = '8';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
