@@ -123,6 +123,13 @@ section.day { display: flex; flex-direction: column; gap: 18px; scroll-margin-to
 .fig .mvh { fill: var(--c); }
 
 footer { color: var(--ink-2); font-size: 13px; max-width: 70ch; }
+/* Barra de progreso del día: sticky arriba, se rellena en verde con las series marcadas. */
+:root { --ok: #23a55a; }
+.prog { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; margin-top: -12px; padding-block: 10px; background: var(--bg); }
+.prog-bar { position: relative; height: 28px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.prog-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--ok); border-radius: 999px; }
+.prog-txt { position: absolute; inset: 0; display: grid; place-items: center; font: 800 14px var(--body); color: var(--ink); font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: no-preference) { .prog-fill { transition: width .3s ease; } }
 /* Un día a la vez: el resto de días queda oculto y el día elegido se resalta en la semana. */
 section.day:not(.on) { display: none; }
 a.wd:not(.on) { opacity: .4; }
@@ -149,6 +156,8 @@ a.wd.on { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--c); }
       <div class="wd off"><b>Dom</b><small>Descanso</small></div>
     </nav>
   </header>
+
+  <div class="prog" aria-live="polite"><div class="prog-bar"><div class="prog-fill" id="prog-fill"></div><div class="prog-txt" id="prog-txt">0 %</div></div></div>
 
   <main id="days" class="wrap"></main>
 
@@ -349,7 +358,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '9';
+const VERSION = '10';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -473,10 +482,18 @@ function hoyId() {
     if (id) return id;
   }
 }
+// % de series hechas del día visible (6 ejercicios × 6 series).
+function updProg() {
+  const sets = [...document.querySelectorAll('section.day.on .set')];
+  const pct = sets.length ? Math.round(100 * sets.filter(b => b.getAttribute('aria-pressed') === 'true').length / sets.length) : 0;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-txt').textContent = pct + ' %';
+}
 function showDay() {
   const id = DAYS.some(d => d.id === location.hash.slice(1)) ? location.hash.slice(1) : hoyId();
   document.querySelectorAll('section.day').forEach(s => s.classList.toggle('on', s.id === id));
   document.querySelectorAll('a.wd').forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + id));
+  updProg();
   window.scrollTo(0, 0);
 }
 document.querySelector('.week').addEventListener('click', ev => {
@@ -487,6 +504,7 @@ document.querySelector('.week').addEventListener('click', ev => {
   showDay();
 });
 window.addEventListener('hashchange', showDay);
+main.addEventListener('click', () => setTimeout(updProg)); // después de que se marque la serie
 showDay();
 
 document.getElementById('copiar-votos').addEventListener('click', () => {
