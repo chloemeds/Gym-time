@@ -242,12 +242,11 @@ const DAYS = [
   { id: 'abs', c: 'var(--d2)', tag: 'Día 2 · Miércoles', title: 'Abdominales',
     intro: 'Todos con carga: elige un peso con el que la 6.ª repetición cueste. Movimientos lentos y controlados, exhala al contraer.',
     ex: [
-      { n: 'Dead bug con mancuerna', m: 'Transverso, estabilidad', r: '60 s',
-        t: 'Tumbada boca arriba con una mancuerna en las manos y la lumbar pegada al suelo. Extiende brazos y la pierna contraria muy despacio, 3 s de bajada, y vuelve. 6 por lado.',
-        f: { label: 'Dead bug tumbada boca arriba con mancuerna', h: P(36, 98), n: P(46, 101), p: P(82, 101),
-             a: [P(32, 96), P(16, 92)], a2: [P(48, 84), P(50, 64)],
-             l: [P(104, 98), P(126, 94)], l2: [P(84, 78), P(106, 78)],
-             front: db(16, 90, false) } },
+      { n: 'Rollout con barra', m: 'Core completo', r: '90 s',
+        t: 'De rodillas, manos en una barra con discos redondos. Rueda hacia delante con el abdomen apretado y la espalda algo redondeada, hasta donde aguantes sin hundir la zona lumbar, y vuelve tirando con el abdomen.',
+        f: { label: 'Rollout de rodillas con barra y discos', h: P(114, 66), n: P(104, 72), p: P(68, 84),
+             a: [P(115, 86), P(126, 98)], l: [P(60, 106), P(38, 106)],
+             front: plate(128, 101, 9) + arrow([[96, 116], [134, 116]]) } },
       { n: 'Leñador en polea', m: 'Oblicuos', r: '60 s',
         t: 'De lado a la polea alta, brazos estirados. Tira en diagonal hacia la cadera contraria girando el tronco, sin doblar los codos. 6 por lado.',
         f: { label: 'Leñador en polea alta en diagonal', flat: true, h: P(84, 24), n: P(84, 36), p: P(84, 66),
@@ -358,7 +357,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '12';
+const VERSION = '13';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -381,7 +380,7 @@ const SUGERIDO = {
   'Curl con barra': '15–20 kg',
   'Press francés': '12–15 kg',
   'Fondos en banco': 'disco de 5–10 kg',
-  'Dead bug con mancuerna': '3–5 kg',
+  'Rollout con barra': 'barra con discos de 5 kg',
   'Leñador en polea': '7–10 kg',
   'Flexión lateral con mancuerna': '8–10 kg',
   'Halo con kettlebell': '6–8 kg',
