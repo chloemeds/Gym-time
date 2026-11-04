@@ -142,9 +142,9 @@ a.wd.on { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--c); }
     <nav class="week" aria-label="Semana">
       <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Lun</b><small>Piernas</small></a>
       <div class="wd off"><b>Mar</b><small>Cardio</small></div>
-      <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Mié</b><small>Glúteo</small></a>
+      <a class="wd" href="#abs" style="--c:var(--d2)"><b>Mié</b><small>Abdominales</small></a>
       <div class="wd off"><b>Jue</b><small>Cardio</small></div>
-      <a class="wd" href="#abs" style="--c:var(--d2)"><b>Vie</b><small>Abdominales</small></a>
+      <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Vie</b><small>Glúteo</small></a>
       <a class="wd" href="#superior" style="--c:var(--d1)"><b>Sáb</b><small>Espalda y brazos</small></a>
       <div class="wd off"><b>Dom</b><small>Descanso</small></div>
     </nav>
@@ -230,7 +230,7 @@ const DAYS = [
              a: [P(48, 82), P(52, 70)], l: [P(92, 98), P(122, 106)],
              back: bench(18, 58, 70) + arrow([[82, 40], [82, 56]]) } },
     ] },
-  { id: 'abs', c: 'var(--d2)', tag: 'Día 3 · Viernes', title: 'Abdominales',
+  { id: 'abs', c: 'var(--d2)', tag: 'Día 2 · Miércoles', title: 'Abdominales',
     intro: 'Todos con carga: elige un peso con el que la 6.ª repetición cueste. Movimientos lentos y controlados, exhala al contraer.',
     ex: [
       { n: 'Crunch en polea alta', m: 'Recto abdominal', r: '60–90 s',
@@ -304,7 +304,7 @@ const DAYS = [
              back: `<rect x="66" y="98" width="44" height="12" rx="2" class="gearf"/>`,
              front: ln(P(78, 90), P(88, 98), 'limb') + db(82, 56, true) + arrow([[110, 92], [110, 70]]) } },
     ] },
-  { id: 'gluteo', c: 'var(--d4)', tag: 'Día 2 · Miércoles', title: 'Glúteo',
+  { id: 'gluteo', c: 'var(--d4)', tag: 'Día 3 · Viernes', title: 'Glúteo',
     intro: 'Empuje de cadera pesado al principio y trabajo de glúteo medio al final. Aprieta el glúteo un segundo en la posición alta de cada repetición.',
     ex: [
       { n: 'Hip thrust con barra', m: 'Glúteo mayor', r: '2–3 min',
@@ -348,7 +348,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '5';
+const VERSION = '6';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -437,7 +437,7 @@ const syncAll = ex => {
 };
 
 // Un solo día visible. Sin #día en la dirección se abre el de hoy o el siguiente entrenamiento.
-const BY_WEEKDAY = { 1: 'piernas', 3: 'gluteo', 5: 'abs', 6: 'superior' };
+const BY_WEEKDAY = { 1: 'piernas', 3: 'abs', 5: 'gluteo', 6: 'superior' };
 function hoyId() {
   for (let i = 0, wd = new Date().getDay(); i < 7; i++) {
     const id = BY_WEEKDAY[(wd + i) % 7];
