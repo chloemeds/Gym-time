@@ -349,7 +349,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '8';
+const VERSION = '9';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -364,6 +364,34 @@ let pesos = {};
 try { pesos = JSON.parse(localStorage.getItem('plan6x6-pesos') || '{}'); } catch (e) { pesos = {}; }
 const savePesos = () => { try { localStorage.setItem('plan6x6-pesos', JSON.stringify(pesos)); } catch (e) {} };
 // Valoraciones por ejercicio (por nombre, así sobreviven a cambios de orden): { 'Pallof press': 'up' | 'down' }
+// Peso orientativo para empezar (Chloe, 60 kg). Es un punto de partida: el peso apuntado manda después.
+const SUGERIDO = {
+  'Dominadas': 'banda de asistencia',
+  'Remo con barra': '25–30 kg',
+  'Remo a una mano': '10–12 kg',
+  'Curl con barra': '15–20 kg',
+  'Press francés': '12–15 kg',
+  'Fondos en banco': 'disco de 5–10 kg',
+  'Crunch declinado con disco': 'disco de 5 kg',
+  'Leñador en polea': '7–10 kg',
+  'Flexión lateral con mancuerna': '8–10 kg',
+  'Halo con kettlebell': '6–8 kg',
+  'Plancha lateral con mancuerna': '4–5 kg',
+  'Encogimiento en V con mancuerna': '3–5 kg',
+  'Sentadilla con barra': '30–40 kg',
+  'Peso muerto rumano': '30–40 kg',
+  'Sentadilla búlgara': '6–10 kg por mano',
+  'Subida al banco': '6–10 kg por mano',
+  'Sentadilla goblet con pausa': '12–16 kg',
+  'Elevación de talones': '10–15 kg por mano',
+  'Hip thrust con barra': '40–60 kg',
+  'Peso muerto sumo': '16–24 kg',
+  'Patada de glúteo': 'tobillera de 2–5 kg',
+  'Puente a una pierna': '8–12 kg en la cadera',
+  'Paso lateral con banda': 'banda media o fuerte',
+  'Hiperextensión de glúteo': 'disco de 5–10 kg',
+};
+
 let votos = {};
 try { votos = JSON.parse(localStorage.getItem('plan6x6-votos') || '{}'); } catch (e) { votos = {}; }
 const saveVotos = () => { try { localStorage.setItem('plan6x6-votos', JSON.stringify(votos)); } catch (e) {} };
@@ -402,7 +430,7 @@ main.innerHTML = [...DAYS].sort((a, b) => a.tag.localeCompare(b.tag)).map(d => `
           <div class="art"><span class="num">${i + 1}</span><span class="scheme">6×6</span>${fig(e.f)}</div>
           <div class="body">
             <h3>${e.n}</h3>
-            <div class="meta"><span class="chip">${e.m}</span><span class="chip rest">Descanso ${e.r}</span></div>
+            <div class="meta"><span class="chip">${e.m}</span><span class="chip rest">Descanso ${e.r}</span>${SUGERIDO[e.n] ? `<span class="chip rest">Empieza con ${SUGERIDO[e.n]}</span>` : ''}</div>
             <p class="tip">${e.t}</p>
             <div class="peso">
               <div class="peso-row">
