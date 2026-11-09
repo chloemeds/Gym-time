@@ -152,9 +152,9 @@ a.wd.on { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--c); }
     <nav class="week" aria-label="Semana">
       <a class="wd" href="#superior" style="--c:var(--d1)"><b>Lun</b><small>Espalda y brazos</small></a>
       <div class="wd off"><b>Mar</b><small>Cardio</small></div>
-      <a class="wd" href="#abs" style="--c:var(--d2)"><b>Mié</b><small>Abdominales</small></a>
-      <div class="wd off"><b>Jue</b><small>Cardio</small></div>
-      <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Vie</b><small>Glúteo</small></a>
+      <div class="wd off"><b>Mié</b><small>Cardio</small></div>
+      <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Jue</b><small>Glúteo</small></a>
+      <a class="wd" href="#abs" style="--c:var(--d2)"><b>Vie</b><small>Abdominales</small></a>
       <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Sáb</b><small>Piernas</small></a>
       <div class="wd off"><b>Dom</b><small>Descanso</small></div>
     </nav>
@@ -233,7 +233,7 @@ const DAYS = [
              back: `<line x1="124" y1="6" x2="124" y2="110" class="gear"/><line x1="108" y1="6" x2="124" y2="6" class="gear"/><rect x="116" y="76" width="14" height="28" rx="2" class="gearf"/>`,
              front: `<line x1="86" y1="60" x2="108" y2="8" class="eq"/>` + arrow([[98, 44], [98, 66]]) } },
     ] },
-  { id: 'abs', c: 'var(--d2)', tag: 'Día 2 · Miércoles', title: 'Abdominales',
+  { id: 'abs', c: 'var(--d2)', tag: 'Día 3 · Viernes', title: 'Abdominales',
     intro: 'Todos con carga: elige un peso con el que la 6.ª repetición cueste. Movimientos lentos y controlados, exhala al contraer.',
     ex: [
       { n: 'Rodillas al pecho colgada con tobilleras', m: 'Recto abdominal inferior', r: '90 s',
@@ -287,7 +287,7 @@ const DAYS = [
              back: bench(40, 80, 80) + `<rect x="94" y="102" width="22" height="8" rx="2" class="gearf"/>`,
              front: ln(P(92, 96), P(102, 102), 'limb') + plate(90, 68, 8) + arrow([[124, 96], [124, 74]]) } },
     ] },
-  { id: 'gluteo', c: 'var(--d4)', tag: 'Día 3 · Viernes', title: 'Glúteo',
+  { id: 'gluteo', c: 'var(--d4)', tag: 'Día 2 · Jueves', title: 'Glúteo',
     intro: 'Empuje de cadera pesado al principio y trabajo de glúteo medio al final. Aprieta el glúteo un segundo en la posición alta de cada repetición.',
     ex: [
       { n: 'Puente de glúteo con barra', m: 'Glúteo mayor', r: '2–3 min',
@@ -541,7 +541,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '17';
+const VERSION = '18';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -697,7 +697,7 @@ const syncAll = ex => {
 };
 
 // Un solo día visible. Sin #día en la dirección se abre el de hoy o el siguiente entrenamiento.
-const BY_WEEKDAY = { 1: 'superior', 3: 'abs', 5: 'gluteo', 6: 'piernas' };
+const BY_WEEKDAY = { 1: 'superior', 4: 'gluteo', 5: 'abs', 6: 'piernas' };
 function hoyId() {
   for (let i = 0, wd = new Date().getDay(); i < 7; i++) {
     const id = BY_WEEKDAY[(wd + i) % 7];
