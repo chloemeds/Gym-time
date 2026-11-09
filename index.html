@@ -147,12 +147,12 @@ a.wd.on { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--c); }
   <header>
     <h1>Plan <span>6×6</span></h1>
     <nav class="week" aria-label="Semana">
-      <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Lun</b><small>Piernas</small></a>
+      <a class="wd" href="#superior" style="--c:var(--d1)"><b>Lun</b><small>Espalda y brazos</small></a>
       <div class="wd off"><b>Mar</b><small>Cardio</small></div>
       <a class="wd" href="#abs" style="--c:var(--d2)"><b>Mié</b><small>Abdominales</small></a>
       <div class="wd off"><b>Jue</b><small>Cardio</small></div>
       <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Vie</b><small>Glúteo</small></a>
-      <a class="wd" href="#superior" style="--c:var(--d1)"><b>Sáb</b><small>Espalda y brazos</small></a>
+      <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Sáb</b><small>Piernas</small></a>
       <div class="wd off"><b>Dom</b><small>Descanso</small></div>
     </nav>
   </header>
@@ -203,7 +203,7 @@ function fig(o) {
 }
 
 const DAYS = [
-  { id: 'superior', c: 'var(--d1)', tag: 'Día 4 · Sábado', title: 'Espalda y brazos',
+  { id: 'superior', c: 'var(--d1)', tag: 'Día 1 · Lunes', title: 'Espalda y brazos',
     intro: 'Primero los tirones grandes de espalda, después bíceps y tríceps cuando ya están calientes.',
     ex: [
       { n: 'Jalón al pecho', m: 'Dorsal, bíceps', r: '2 min',
@@ -280,7 +280,7 @@ const DAYS = [
              a: [P(108, 102), P(124, 106)], l: [P(42, 94), P(20, 106)],
              front: plate(90, 72, 9) } },
     ] },
-  { id: 'piernas', c: 'var(--d3)', tag: 'Día 1 · Lunes', title: 'Piernas',
+  { id: 'piernas', c: 'var(--d3)', tag: 'Día 4 · Sábado', title: 'Piernas',
     intro: 'Cuádriceps, isquios y gemelos. La sentadilla es el ejercicio más pesado de la semana: dale los descansos completos.',
     ex: [
       { n: 'Sentadilla en multipower', m: 'Cuádriceps, glúteo', r: '2–3 min',
@@ -365,7 +365,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '14';
+const VERSION = '15';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -487,7 +487,7 @@ const syncAll = ex => {
 };
 
 // Un solo día visible. Sin #día en la dirección se abre el de hoy o el siguiente entrenamiento.
-const BY_WEEKDAY = { 1: 'piernas', 3: 'abs', 5: 'gluteo', 6: 'superior' };
+const BY_WEEKDAY = { 1: 'superior', 3: 'abs', 5: 'gluteo', 6: 'piernas' };
 function hoyId() {
   for (let i = 0, wd = new Date().getDay(); i < 7; i++) {
     const id = BY_WEEKDAY[(wd + i) % 7];
