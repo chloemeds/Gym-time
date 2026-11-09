@@ -218,17 +218,6 @@ const DAYS = [
              a: [P(48, 74), P(68, 80)], l: [P(84, 84), P(106, 94)],
              back: `<rect x="38" y="96" width="44" height="6" rx="2" class="gearf"/><line x1="108" y1="84" x2="112" y2="104" class="gear"/><line x1="134" y1="60" x2="134" y2="110" class="gear"/>`,
              front: `<line x1="70" y1="80" x2="132" y2="96" class="eq"/>` + arrow([[104, 66], [84, 66]]) } },
-      { n: 'Remo con apoyo en banco inclinado', m: 'Dorsal, deltoides posterior', r: '90 s',
-        t: 'Pecho apoyado en el banco inclinado, una mancuerna en cada mano. Rema llevando los codos hacia atrás y arriba, aguanta 1 s y baja estirando del todo.',
-        f: { label: 'Remo con mancuernas tumbada boca abajo en banco inclinado', h: P(106, 50), n: P(96, 58), p: P(60, 88),
-             a: [P(86, 50), P(90, 68)], a2: [P(100, 74), P(100, 90)], l: [P(44, 98), P(36, 108)],
-             back: `<line x1="54" y1="98" x2="100" y2="60" class="gear" style="stroke-width:6"/><line x1="62" y1="92" x2="62" y2="110" class="gear"/><line x1="92" y1="68" x2="92" y2="110" class="gear"/>` + db(100, 92, false),
-             front: db(90, 70, false) } },
-      { n: 'Pullover con mancuerna', m: 'Dorsal, pecho', r: '90 s',
-        t: 'Tumbada en el banco, una mancuerna sujeta con las dos manos sobre el pecho. Bájala por detrás de la cabeza con los codos un poco doblados y súbela tirando con la espalda.',
-        f: { label: 'Pullover tumbada en banco con una mancuerna', h: P(36, 70), n: P(48, 74), p: P(84, 74),
-             a: [P(32, 64), P(18, 62)], l: [P(102, 74), P(104, 108)],
-             back: bench(26, 96, 80), front: db(15, 60, true) + arrow([[14, 46], [32, 34], [48, 40]]) } },
       { n: 'Curl martillo', m: 'Bíceps, antebrazo', r: '90 s',
         t: 'De pie, mancuernas con las palmas mirándose. Sube sin mover los codos ni balancear el tronco y baja en dos o tres segundos.',
         f: { label: 'Curl martillo de pie con mancuernas', h: P(80, 18), n: P(80, 30), p: P(80, 64),
@@ -263,17 +252,6 @@ const DAYS = [
              a: [P(94, 62), P(96, 82)], a2: [P(68, 60), P(64, 74)],
              l: [P(70, 90), P(70, 108)], l2: [P(90, 90), P(90, 108)],
              front: db(96, 88, false) + arrow([[118, 92], [118, 68]]) } },
-      { n: 'Bird dog con tobilleras', m: 'Core, lumbar', r: '60 s',
-        t: 'A cuatro patas con tobilleras y una mancuerna ligera. Estira brazo y pierna contrarios hasta la horizontal sin girar la cadera, aguanta 2 s y vuelve. 6 por lado.',
-        f: { label: 'Bird dog a cuatro patas con tobillera y mancuerna', h: P(110, 66), n: P(98, 74), p: P(64, 74),
-             a: [P(116, 70), P(134, 66)], a2: [P(99, 91), P(100, 108)],
-             l: [P(42, 72), P(18, 70)], l2: [P(64, 104), P(42, 106)],
-             front: db(136, 66, false) + `<rect x="10" y="64" width="9" height="12" rx="3" class="eqf"/>` } },
-      { n: 'Crunch inverso con tobilleras', m: 'Recto abdominal inferior', r: '60–90 s',
-        t: 'Tumbada en el banco, manos agarrando el banco por detrás de la cabeza y tobilleras puestas. Lleva las rodillas al pecho despegando la cadera del banco y baja despacio.',
-        f: { label: 'Crunch inverso tumbada en banco con tobilleras', h: P(36, 70), n: P(48, 74), p: P(80, 70),
-             a: [P(34, 62), P(26, 78)], l: [P(72, 50), P(92, 48)],
-             back: bench(22, 96, 80), front: `<rect x="88" y="42" width="9" height="12" rx="3" class="eqf"/>` + arrow([[112, 66], [108, 44]]) } },
       { n: 'Plancha con disco', m: 'Core completo', r: '60 s',
         t: 'Plancha sobre los antebrazos con un disco en la parte alta de la espalda (que te lo coloquen). Cada serie son 6 respiraciones lentas y profundas sin dejar caer la cadera.',
         f: { label: 'Plancha sobre antebrazos con disco en la espalda', h: P(118, 74), n: P(108, 80), p: P(64, 84),
@@ -289,12 +267,6 @@ const DAYS = [
              a: [P(76, 64), P(86, 52)], l: [P(98, 86), P(82, 108)],
              back: `<line x1="58" y1="8" x2="58" y2="110" class="gear"/><line x1="114" y1="8" x2="114" y2="110" class="gear"/><line x1="58" y1="50" x2="114" y2="50" class="eq"/>`,
              front: plate(84, 50, 13) } },
-      { n: 'Prensa de piernas', m: 'Cuádriceps, glúteo', r: '2–3 min',
-        t: 'Espalda y cadera pegadas al respaldo, pies en mitad de la plataforma. Baja hasta que las rodillas lleguen cerca del pecho sin despegar la cadera y empuja sin bloquear las rodillas.',
-        f: { label: 'Prensa de piernas inclinada', h: P(34, 66), n: P(42, 76), p: P(64, 98),
-             a: [P(52, 92), P(64, 104)], l: [P(82, 70), P(104, 82)],
-             back: `<polyline points="28,62 58,104 84,104" class="gear"/><line x1="86" y1="106" x2="146" y2="46" class="gear"/>`,
-             front: `<line x1="98" y1="70" x2="114" y2="92" class="eq" style="stroke-width:6"/>` + plate(122, 66, 8) + arrow([[120, 104], [138, 86]]) } },
       { n: 'Zancada atrás con mancuernas', m: 'Cuádriceps, glúteo', r: '90 s',
         t: 'De pie con una mancuerna en cada mano. Da un paso largo hacia atrás, baja hasta que la rodilla de atrás casi toque el suelo y vuelve empujando con la pierna de delante. 6 por pierna.',
         f: { label: 'Zancada hacia atrás con mancuernas', h: P(74, 34), n: P(72, 46), p: P(70, 80),
@@ -305,12 +277,6 @@ const DAYS = [
         f: { label: 'Curl femoral tumbada boca abajo en máquina', h: P(28, 62), n: P(38, 66), p: P(76, 66),
              a: [P(34, 76), P(26, 74)], l: [P(98, 66), P(104, 44)],
              back: bench(18, 112, 72), front: `<rect x="100" y="38" width="14" height="10" rx="4" class="eqf"/>` + arrow([[126, 64], [122, 40]]) } },
-      { n: 'Extensión de cuádriceps', m: 'Cuádriceps', r: '90 s',
-        t: 'Sentada en la máquina con la espalda apoyada y el rodillo en los tobillos. Estira las piernas del todo, aguanta 1 s arriba y baja despacio.',
-        f: { label: 'Extensión de piernas sentada en máquina', h: P(60, 36), n: P(60, 48), p: P(64, 76),
-             a: [P(66, 62), P(74, 76)], l: [P(88, 76), P(112, 72)],
-             back: `<line x1="52" y1="38" x2="52" y2="110" class="gear"/><rect x="52" y="80" width="38" height="7" rx="2" class="gearf"/><line x1="80" y1="87" x2="80" y2="110" class="gear"/>`,
-             front: `<rect x="106" y="74" width="12" height="10" rx="4" class="eqf"/>` + arrow([[128, 100], [128, 78]]) } },
       { n: 'Gemelo sentada', m: 'Sóleo, gemelos', r: '60 s',
         t: 'Sentada con las puntas en un escalón y un disco o mancuernas sobre las rodillas. Baja el talón todo lo posible, sube al máximo y aguanta 1 s arriba.',
         f: { label: 'Elevación de talones sentada con disco en las rodillas', h: P(65, 32), n: P(64, 44), p: P(66, 76),
@@ -331,24 +297,12 @@ const DAYS = [
         f: { label: 'Peso muerto a una pierna con mancuerna', h: P(118, 54), n: P(108, 58), p: P(76, 64),
              a: [P(108, 74), P(108, 90)], l: [P(80, 86), P(80, 108)], l2: [P(54, 58), P(32, 54)],
              front: db(108, 93, true) } },
-      { n: 'Pull-through en polea', m: 'Glúteo, isquiotibiales', r: '90 s',
-        t: 'De espaldas a la polea baja, cuerda entre las piernas. Lleva la cadera atrás con la espalda recta y vuelve empujando la cadera hacia delante y apretando el glúteo arriba.',
-        f: { label: 'Pull-through con cuerda en polea baja', h: P(114, 42), n: P(104, 48), p: P(74, 64),
-             a: [P(96, 70), P(82, 88)], l: [P(80, 86), P(80, 108)],
-             back: `<line x1="16" y1="40" x2="16" y2="110" class="gear"/><rect x="8" y="70" width="14" height="28" rx="2" class="gearf"/>`,
-             front: `<line x1="80" y1="90" x2="20" y2="104" class="eq"/>` + arrow([[46, 44], [66, 44]]) } },
       { n: 'Sentadilla sumo con mancuerna', m: 'Glúteo, aductores', r: '90 s',
         t: 'Pies muy abiertos y puntas hacia fuera, mancuerna colgando entre las piernas. Baja con el tronco erguido y las rodillas hacia fuera, y sube apretando el glúteo.',
         f: { label: 'Sentadilla sumo con mancuerna entre las piernas', flat: true, h: P(80, 40), n: P(80, 52), p: P(80, 80),
              a: [P(74, 66), P(78, 84)], a2: [P(86, 66), P(82, 84)],
              l: [P(60, 88), P(54, 108)], l2: [P(100, 88), P(106, 108)],
              front: db(80, 92, true) } },
-      { n: 'Zancada lateral con mancuerna', m: 'Glúteo medio, aductores', r: '90 s',
-        t: 'Mancuerna sujeta al pecho. Da un paso amplio hacia un lado, baja la cadera atrás sobre esa pierna con la otra estirada y vuelve empujando. 6 por lado.',
-        f: { label: 'Zancada lateral con mancuerna al pecho', flat: true, h: P(98, 34), n: P(94, 46), p: P(84, 76),
-             a: [P(102, 60), P(100, 52)], a2: [P(88, 60), P(98, 52)],
-             l: [P(108, 86), P(112, 108)], l2: [P(64, 92), P(46, 108)],
-             front: db(100, 50, true) + arrow([[124, 66], [142, 66]]) } },
       { n: 'Abducción de cadera en máquina', m: 'Glúteo medio', r: '60 s',
         t: 'Sentada en la máquina con la espalda apoyada. Abre las rodillas contra las almohadillas todo lo que puedas, aguanta 1 s y cierra despacio sin dejar que el peso choque.',
         f: { label: 'Abducción de cadera sentada en máquina', flat: true, h: P(80, 30), n: P(80, 42), p: P(80, 74),
@@ -365,7 +319,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '15';
+const VERSION = '16';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -389,27 +343,19 @@ const savePesos = () => { try { localStorage.setItem('plan6x6-pesos', JSON.strin
 const SUGERIDO = {
   'Jalón al pecho': '25–30 kg',
   'Remo en polea baja': '25–30 kg',
-  'Remo con apoyo en banco inclinado': '8–10 kg por mano',
-  'Pullover con mancuerna': '8–10 kg',
   'Curl martillo': '6–8 kg por mano',
   'Extensión de tríceps en polea': '10–15 kg',
   'Rodillas al pecho colgada con tobilleras': 'tobilleras de 1–2 kg',
   'Arcoíris con barra': 'barra con discos de 2,5–5 kg',
   'Peso muerto a una mano': '14–20 kg',
-  'Bird dog con tobilleras': 'tobilleras de 1–2 kg y mancuerna de 2 kg',
-  'Crunch inverso con tobilleras': 'tobilleras de 1–2 kg',
   'Plancha con disco': 'disco de 10 kg',
   'Sentadilla en multipower': '30–40 kg',
-  'Prensa de piernas': '60–80 kg',
   'Zancada atrás con mancuernas': '6–10 kg por mano',
   'Curl femoral tumbada': '15–25 kg',
-  'Extensión de cuádriceps': '20–30 kg',
   'Gemelo sentada': 'disco de 15–20 kg',
   'Puente de glúteo con barra': '40–60 kg',
   'Peso muerto a una pierna': '8–12 kg',
-  'Pull-through en polea': '15–25 kg',
   'Sentadilla sumo con mancuerna': '14–20 kg',
-  'Zancada lateral con mancuerna': '6–10 kg',
   'Abducción de cadera en máquina': '30–40 kg',
 };
 
@@ -494,7 +440,7 @@ function hoyId() {
     if (id) return id;
   }
 }
-// % de series hechas del día visible (6 ejercicios × 6 series).
+// % de series hechas del día visible (4 ejercicios × 6 series).
 function updProg() {
   const sets = [...document.querySelectorAll('section.day.on .set')];
   const pct = sets.length ? Math.round(100 * sets.filter(b => b.getAttribute('aria-pressed') === 'true').length / sets.length) : 0;
