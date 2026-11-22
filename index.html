@@ -150,13 +150,13 @@ a.wd.on { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--c); }
   <header>
     <h1>Plan <span>6×6</span></h1>
     <nav class="week" aria-label="Semana">
-      <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Lun</b><small>Piernas</small></a>
+      <a class="wd" href="#superior" style="--c:var(--d1)"><b>Lun</b><small>Espalda y brazos</small></a>
       <div class="wd off"><b>Mar</b><small>Cardio</small></div>
-      <a class="wd" href="#superior" style="--c:var(--d1)"><b>Mié</b><small>Espalda y brazos</small></a>
+      <a class="wd" href="#abs" style="--c:var(--d2)"><b>Mié</b><small>Abdominales</small></a>
       <div class="wd off"><b>Jue</b><small>Cardio</small></div>
-      <a class="wd" href="#abs" style="--c:var(--d2)"><b>Vie</b><small>Abdominales</small></a>
-      <div class="wd off"><b>Sáb</b><small>Descanso</small></div>
-      <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Dom</b><small>Piernas · glúteo</small></a>
+      <a class="wd" href="#gluteo" style="--c:var(--d4)"><b>Vie</b><small>Glúteo</small></a>
+      <a class="wd" href="#piernas" style="--c:var(--d3)"><b>Sáb</b><small>Piernas</small></a>
+      <div class="wd off"><b>Dom</b><small>Descanso</small></div>
     </nav>
   </header>
 
@@ -206,7 +206,7 @@ function fig(o) {
 }
 
 const DAYS = [
-  { id: 'superior', c: 'var(--d1)', tag: 'Día 2 · Miércoles', title: 'Espalda y brazos',
+  { id: 'superior', c: 'var(--d1)', tag: 'Día 1 · Lunes', title: 'Espalda y brazos',
     intro: 'Primero los tirones grandes de espalda, después bíceps y tríceps cuando ya están calientes.',
     ex: [
       { n: 'Pullover con mancuerna', m: 'Dorsal, pecho', r: '90 s',
@@ -230,7 +230,7 @@ const DAYS = [
              a: [P(46, 50), P(32, 56)], l: [P(102, 74), P(104, 108)],
              back: bench(26, 96, 80), front: plate(30, 56, 8) } },
     ] },
-  { id: 'abs', c: 'var(--d2)', tag: 'Día 3 · Viernes', title: 'Abdominales',
+  { id: 'abs', c: 'var(--d2)', tag: 'Día 2 · Miércoles', title: 'Abdominales',
     intro: 'Todos con carga: elige un peso con el que la 6.ª repetición cueste. Movimientos lentos y controlados, exhala al contraer.',
     ex: [
       { n: 'Encogimiento en V con mancuerna', m: 'Recto abdominal', r: '60–90 s',
@@ -257,8 +257,8 @@ const DAYS = [
              a: [P(115, 86), P(126, 98)], l: [P(60, 106), P(38, 106)],
              front: plate(128, 101, 9) + arrow([[96, 116], [134, 116]]) } },
     ] },
-  { id: 'piernas', c: 'var(--d3)', tag: 'Día 1 · Lunes', title: 'Piernas',
-    intro: 'Cuádriceps, isquios y gemelos. La sentadilla es el ejercicio más pesado de la semana: dale los descansos completos.',
+  { id: 'piernas', c: 'var(--d3)', tag: 'Día 4 · Sábado', title: 'Piernas',
+    intro: 'Cuádriceps, isquios y gemelos. El primero es el más pesado del día: dale los descansos completos.',
     ex: [
       { n: 'Sentadilla con barra', m: 'Cuádriceps, glúteo', r: '3 min',
         t: 'Barra sobre los trapecios, pies a la anchura de los hombros. Baja con el pecho alto hasta que la cadera pase la rodilla y sube empujando el suelo.',
@@ -282,7 +282,7 @@ const DAYS = [
              back: `<rect x="66" y="98" width="44" height="12" rx="2" class="gearf"/>`,
              front: ln(P(78, 90), P(88, 98), 'limb') + db(82, 56, true) + arrow([[110, 92], [110, 70]]) } },
     ] },
-  { id: 'gluteo', c: 'var(--d4)', tag: 'Día 4 · Domingo', title: 'Piernas · glúteo',
+  { id: 'gluteo', c: 'var(--d4)', tag: 'Día 3 · Viernes', title: 'Glúteo',
     intro: 'Empuje de cadera pesado al principio y trabajo de glúteo medio al final. Aprieta el glúteo un segundo en la posición alta de cada repetición.',
     ex: [
       { n: 'Hip thrust con barra', m: 'Glúteo mayor', r: '2–3 min',
@@ -621,30 +621,32 @@ const LIB = Object.fromEntries([...DAYS.flatMap(d => d.ex),
 ].map(e => [e.n, e]));
 const ALT = {
   superior: [
-    ['Pullover con mancuerna', 'Jalón al pecho', 'Jalón con agarre estrecho', 'Pullover en polea alta', 'Dominadas lastradas'],
-    ['Remo con barra', 'Remo a una mano', 'Remo con apoyo en banco inclinado', 'Remo en polea baja', 'Remo en máquina'],
-    ['Curl con barra', 'Curl inclinado con mancuernas', 'Curl martillo', 'Curl en polea', 'Curl concentrado'],
-    ['Press francés', 'Fondos en banco', 'Extensión de tríceps en polea', 'Patada de tríceps', 'Extensión de tríceps por encima de la cabeza'],
+    ['Jalón con agarre estrecho', 'Pullover con mancuerna', 'Jalón al pecho', 'Pullover en polea alta', 'Dominadas lastradas'],
+    ['Remo en máquina', 'Remo con barra', 'Remo a una mano', 'Remo con apoyo en banco inclinado', 'Remo en polea baja'],
+    ['Curl inclinado con mancuernas', 'Curl con barra', 'Curl martillo', 'Curl en polea', 'Curl concentrado'],
+    ['Extensión de tríceps por encima de la cabeza', 'Press francés', 'Fondos en banco', 'Extensión de tríceps en polea', 'Patada de tríceps'],
   ],
   abs: [
-    ['Encogimiento en V con mancuerna', 'Crunch inverso con tobilleras', 'Rodillas al pecho colgada con tobilleras', 'Sit-up con disco', 'Crunch en polea alta'],
-    ['Leñador en polea', 'Pallof press', 'Giro ruso con peso', 'Arcoíris con barra', 'Leñador de abajo arriba'],
-    ['Flexión lateral con mancuerna', 'Plancha lateral con mancuerna', 'Peso muerto a una mano', 'Paseo del granjero a una mano', 'Flexión lateral en polea'],
-    ['Rollout con barra', 'Dead bug con mancuerna', 'Plancha con remo', 'Bird dog con tobilleras', 'Halo con kettlebell', 'Plancha con disco'],
+    ['Crunch en polea alta', 'Encogimiento en V con mancuerna', 'Crunch inverso con tobilleras', 'Rodillas al pecho colgada con tobilleras', 'Sit-up con disco'],
+    ['Pallof press', 'Leñador en polea', 'Giro ruso con peso', 'Arcoíris con barra', 'Leñador de abajo arriba'],
+    ['Paseo del granjero a una mano', 'Flexión lateral con mancuerna', 'Plancha lateral con mancuerna', 'Peso muerto a una mano', 'Flexión lateral en polea'],
+    ['Plancha con remo', 'Rollout con barra', 'Dead bug con mancuerna', 'Bird dog con tobilleras', 'Halo con kettlebell', 'Plancha con disco'],
   ],
   piernas: [
-    ['Sentadilla con barra', 'Sentadilla goblet con pausa', 'Prensa de piernas', 'Sentadilla en multipower', 'Extensión de cuádriceps'],
-    ['Sentadilla búlgara', 'Subida al banco', 'Zancada atrás con mancuernas', 'Zancada caminando con mancuernas', 'Split squat con barra'],
-    ['Peso muerto rumano', 'Curl femoral tumbada', 'Curl femoral sentada', 'Good morning con barra', 'Peso muerto rumano con mancuernas'],
-    ['Elevación de talones', 'Gemelo sentada', 'Gemelo en prensa', 'Gemelo a una pierna', 'Gemelo en multipower'],
+    ['Sentadilla goblet con pausa', 'Sentadilla con barra', 'Prensa de piernas', 'Sentadilla en multipower', 'Extensión de cuádriceps'],
+    ['Split squat con barra', 'Sentadilla búlgara', 'Subida al banco', 'Zancada atrás con mancuernas', 'Zancada caminando con mancuernas'],
+    ['Curl femoral sentada', 'Peso muerto rumano', 'Curl femoral tumbada', 'Good morning con barra', 'Peso muerto rumano con mancuernas'],
+    ['Gemelo en prensa', 'Elevación de talones', 'Gemelo sentada', 'Gemelo a una pierna', 'Gemelo en multipower'],
   ],
   gluteo: [
-    ['Hip thrust con barra', 'Puente a una pierna', 'Puente de glúteo con barra', 'Hip thrust en máquina', 'Hip thrust a una pierna'],
-    ['Hiperextensión de glúteo', 'Pull-through en polea', 'Peso muerto a una pierna', 'Patada de glúteo en polea', 'Peso muerto con kettlebell'],
-    ['Peso muerto sumo', 'Zancada lateral con mancuerna', 'Sentadilla sumo con mancuerna', 'Aducción en máquina', 'Zancada cosaca con mancuerna'],
-    ['Abducción en polea', 'Abducción de cadera en máquina', 'Paso lateral con banda', 'Patada de glúteo', 'Abducción tumbada con tobillera'],
+    ['Hip thrust en máquina', 'Hip thrust con barra', 'Puente a una pierna', 'Puente de glúteo con barra', 'Hip thrust a una pierna'],
+    ['Pull-through en polea', 'Hiperextensión de glúteo', 'Peso muerto a una pierna', 'Patada de glúteo en polea', 'Peso muerto con kettlebell'],
+    ['Aducción en máquina', 'Peso muerto sumo', 'Zancada lateral con mancuerna', 'Sentadilla sumo con mancuerna', 'Zancada cosaca con mancuerna'],
+    ['Abducción tumbada con tobillera', 'Abducción en polea', 'Abducción de cadera en máquina', 'Paso lateral con banda', 'Patada de glúteo'],
   ],
 };
+// Los ejercicios de la semana son los primeros de cada hueco de ALT.
+DAYS.forEach(d => { d.ex = ALT[d.id].map(slot => LIB[slot[0]]); });
 
 // Sin zoom: iOS ignora a veces user-scalable, así que se bloquea el pellizco; el doble toque lo quita touch-action.
 ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault(), { passive: false }));
@@ -652,7 +654,7 @@ document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preven
 
 // Actualización automática: GitHub Pages guarda la página en caché unos minutos.
 // Si version.txt no coincide con esta versión, se recarga con una URL nueva.
-const VERSION = '21';
+const VERSION = '22';
 fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSION).then(v => {
   v = v.trim();
   if (v && v !== VERSION && !location.search.includes('v=' + v)) location.replace('./?v=' + v);
@@ -661,7 +663,7 @@ fetch('./version.txt', { cache: 'no-store' }).then(r => r.ok ? r.text() : VERSIO
 let store = {};
 try { store = JSON.parse(localStorage.getItem('plan6x6') || '{}'); } catch (e) { store = {}; }
 // Al cambiar los ejercicios de la semana, las series marcadas de la anterior se borran.
-const PLAN_WEEK = '2026-11-16';
+const PLAN_WEEK = '2026-11-23';
 try {
   if (localStorage.getItem('plan6x6-semana') !== PLAN_WEEK) { store = {}; localStorage.setItem('plan6x6', '{}'); localStorage.setItem('plan6x6-semana', PLAN_WEEK); }
 } catch (e) {}
@@ -839,7 +841,7 @@ const syncAll = ex => {
 };
 
 // Un solo día visible. Sin #día en la dirección se abre el de hoy o el siguiente entrenamiento.
-const BY_WEEKDAY = { 1: 'piernas', 3: 'superior', 5: 'abs', 0: 'gluteo' };
+const BY_WEEKDAY = { 1: 'superior', 3: 'abs', 5: 'gluteo', 6: 'piernas' };
 function hoyId() {
   for (let i = 0, wd = new Date().getDay(); i < 7; i++) {
     const id = BY_WEEKDAY[(wd + i) % 7];
